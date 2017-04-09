@@ -3932,7 +3932,7 @@ void PM_SetSaberMove(short newMove)
 		}
 		else if ( BG_SpinningSaberAnim( anim ) )
 		{//spins must be played on entire body
-			parts = SETANIM_BOTH;
+			parts = SETANIM_TORSO;// Boothand: Let's actually try cancelling the spins SETANIM_BOTH;
 		}
 		else if ( (!pm->cmd.forwardmove&&!pm->cmd.rightmove&&!pm->cmd.upmove))
 		{//not trying to run, duck or jump
