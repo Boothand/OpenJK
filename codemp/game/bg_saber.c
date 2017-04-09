@@ -2732,6 +2732,9 @@ qboolean PM_SaberPowerCheck(void)
 
 qboolean PM_CanDoRollStab( void )
 {
+	//Boothand: disable roll stab.
+	return qfalse;
+
 	if ( pm->ps->weapon == WP_SABER )
 	{
 		saberInfo_t *saber = BG_MySaber( pm->ps->clientNum, 0 );
