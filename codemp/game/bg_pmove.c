@@ -8493,14 +8493,14 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 		}
 		else
 		{
-			if (ps->legsTimer > 800)
-			{
-				ps->speed = ps->legsTimer/1.5;//450;
-			}
-			else
-			{
-				ps->speed = ps->legsTimer/5.0;//450;
-			}
+			//if (ps->legsTimer > 800)
+			//{
+			ps->speed = ps->legsTimer / 2.0;// Boothand 1.5;//450;
+			//}
+			//else
+			//{
+			//	ps->speed = ps->legsTimer/5.0;//450;
+			//}
 		}
 		if (ps->speed > 600)
 		{
