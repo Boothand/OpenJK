@@ -456,6 +456,47 @@ int PM_SaberAnimTransitionAnim( int curmove, int newmove )
 			else if ( saberMoveData[curmove].endQuad == saberMoveData[newmove].startQuad )
 			{//new move starts from same quadrant
 				retmove = newmove;
+
+				//Boot added these, to prevent same quad attacks to skip the transition
+				switch (curmove)
+				{
+				case LS_A_L2R:
+					if (newmove == LS_A_R2L)
+					{
+						retmove = LS_T1_TR__R;
+						break;
+					}
+				case LS_A_R2L:
+					if (newmove == LS_A_L2R)	
+					{
+						retmove = LS_T1_BR__L;
+						break;
+					}
+				case LS_A_TL2BR:
+					if (newmove == LS_A_BR2TL)
+					{
+						retmove = LS_T1_TR_BR;
+						break;
+					}
+				case LS_A_BL2TR:
+					if (newmove == LS_A_TR2BL)
+					{
+						retmove = LS_T1_BR_TR;
+						break;
+					}
+				case LS_A_BR2TL:
+					if (newmove == LS_A_TL2BR)
+					{
+						retmove = LS_T1_BL_TL;
+						break;
+					}
+				case LS_A_TR2BL:
+					if (newmove == LS_A_BL2TR)
+					{
+						retmove = LS_T1_TL_BL;
+						break;
+					}
+				}
 			}
 			else
 			{
