@@ -802,7 +802,7 @@ qboolean PM_SaberKataDone(int curmove, int newmove)
 				return qtrue;
 			}
 		}
-		if ( pm->ps->fd.saberAnimLevel == FORCE_LEVEL_2 && pm->ps->saberAttackChainCount > PM_irand_timesync( 2, 5 ) )
+		if ( pm->ps->fd.saberAnimLevel == FORCE_LEVEL_2 && pm->ps->saberAttackChainCount > 3)//PM_irand_timesync( 2, 5 ) )
 		{
 			return qtrue;
 		}
