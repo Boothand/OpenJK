@@ -5309,7 +5309,7 @@ static void PM_Footsteps( void ) {
 
 		bobmove = 0.5;	// ducked characters bob much faster
 
-		if ( ( (PM_RunningAnim( pm->ps->legsAnim )&&VectorLengthSquared(pm->ps->velocity)>=40000/*200*200*/) || PM_CanRollFromSoulCal( pm->ps ) ) &&
+		if ( ( (PM_RunningAnim( pm->ps->legsAnim ) /*Boothand: roll without a min-speed &&VectorLengthSquared(pm->ps->velocity)>=40000/*200*200*/) || PM_CanRollFromSoulCal( pm->ps ) ) &&
 			!BG_InRoll(pm->ps, pm->ps->legsAnim) )
 		{//roll!
 			rolled = PM_TryRoll();
