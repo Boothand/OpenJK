@@ -2906,7 +2906,7 @@ void Cmd_SaberAttackCycle_f(gentity_t *ent)
 		{ //cycle around upward til we hit the next style or end up back on this one
 			if (i >= SS_NUM_SABER_STYLES)
 			{ //loop back around to the first valid
-				i = SS_FAST;
+				i = SS_MEDIUM;// Boothand: No blue style SS_FAST;
 			}
 
 			if (bgSiegeClasses[ent->client->siegeClass].saberStance & (1 << i))
@@ -2927,7 +2927,7 @@ void Cmd_SaberAttackCycle_f(gentity_t *ent)
 		selectLevel++;
 		if ( selectLevel > ent->client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE] )
 		{
-			selectLevel = FORCE_LEVEL_1;
+			selectLevel = FORCE_LEVEL_2;//Boothand: No blue style FORCE_LEVEL_1;
 		}
 		if (d_saberStanceDebug.integer)
 		{

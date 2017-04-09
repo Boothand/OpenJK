@@ -172,8 +172,8 @@ void WP_InitForcePowers( gentity_t *ent ) {
 
 	ent->client->ps.fd.saberAnimLevel = ent->client->sess.saberLevel;
 
-	if ( ent->client->ps.fd.saberAnimLevel < FORCE_LEVEL_1 || ent->client->ps.fd.saberAnimLevel > FORCE_LEVEL_3 )
-		ent->client->ps.fd.saberAnimLevel = FORCE_LEVEL_1;
+	if (ent->client->ps.fd.saberAnimLevel < FORCE_LEVEL_1 || ent->client->ps.fd.saberAnimLevel > FORCE_LEVEL_3)
+		ent->client->ps.fd.saberAnimLevel = FORCE_LEVEL_2;// Boothand: No blue style FORCE_LEVEL_1;
 
 	// so that the client configstring is already modified with this when we need it
 	if ( !speedLoopSound )
@@ -4989,7 +4989,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 	//The stance in relation to power level is no longer applicable with the crazy new akimbo/staff stances.
 	if (!self->client->ps.fd.saberAnimLevel)
 	{
-		self->client->ps.fd.saberAnimLevel = FORCE_LEVEL_1;
+		self->client->ps.fd.saberAnimLevel = FORCE_LEVEL_2;//Boothand: No blue style FORCE_LEVEL_1;
 	}
 
 	if (level.gametype != GT_SIEGE)
