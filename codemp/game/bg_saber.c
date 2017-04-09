@@ -2156,6 +2156,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 	saberMoveName_t overrideJumpRightAttackMove = LS_INVALID;
 	saberMoveName_t overrideJumpLeftAttackMove = LS_INVALID;
 
+	/* Boothand comment
 	if ( pm->ps->weapon == WP_SABER )
 	{
 		saberInfo_t *saber1 = BG_MySaber( pm->ps->clientNum, 0 );
@@ -2218,9 +2219,12 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			allowCartwheels = qfalse;
 		}
 	}
+	*/
 
 	if ( pm->cmd.rightmove > 0 )
 	{//moving right
+
+		/* Boothand comment
 		if ( !noSpecials
 			&& overrideJumpRightAttackMove != LS_NONE
 			&& pm->ps->velocity[2] > 20.0f //pm->ps->groundEntityNum != ENTITYNUM_NONE//on ground
@@ -2267,7 +2271,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 				}
 			}
 		}
-		else if ( pm->cmd.forwardmove > 0 )
+		else */if ( pm->cmd.forwardmove > 0 )
 		{//forward right = TL2BR slash
 			newmove = LS_A_TL2BR;
 		}
@@ -2282,6 +2286,9 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 	}
 	else if ( pm->cmd.rightmove < 0 )
 	{//moving left
+
+
+		/* Boothand comment
 		if ( !noSpecials
 			&& overrideJumpLeftAttackMove != LS_NONE
 			&& pm->ps->velocity[2] > 20.0f //pm->ps->groundEntityNum != ENTITYNUM_NONE//on ground
@@ -2328,7 +2335,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 				}
 			}
 		}
-		else if ( pm->cmd.forwardmove > 0 )
+		else */if ( pm->cmd.forwardmove > 0 )
 		{//forward left = TR2BL slash
 			newmove = LS_A_TR2BL;
 		}
@@ -2345,6 +2352,8 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 	{//not moving left or right
 		if ( pm->cmd.forwardmove > 0 )
 		{//forward= T2B slash
+
+			/*Boothand comment
 			if (!noSpecials&&
 				(pm->ps->fd.saberAnimLevel == SS_DUAL || pm->ps->fd.saberAnimLevel == SS_STAFF) &&
 				pm->ps->fd.forceRageRecoveryTime < pm->cmd.serverTime &&
@@ -2434,9 +2443,14 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 					newmove = LS_A_T2B;
 				}
 			}
+			*/
+			newmove = LS_A_T2B;
+
 		}
 		else if ( pm->cmd.forwardmove < 0 )
 		{//backward= T2B slash//B2T uppercut?
+
+			/* Boothand comment
 			if (!noSpecials&&
 				pm->ps->fd.saberAnimLevel == SS_STAFF &&
 				pm->ps->fd.forceRageRecoveryTime < pm->cmd.serverTime &&
@@ -2474,6 +2488,10 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			{
 				newmove = LS_A_T2B;
 			}
+			*/
+
+			newmove = LS_A_T2B;
+
 		}
 		else if ( PM_SaberInBounce( curmove ) )
 		{//bounces should go to their default attack if you don't specify a direction but are attacking
