@@ -747,10 +747,13 @@ qboolean PM_SaberKataDone(int curmove, int newmove)
 				return qtrue;
 			}
 		}
-		else if ( pm->ps->saberAttackChainCount > PM_irand_timesync( 2, 3 ) )
+		else if ( pm->ps->saberAttackChainCount > 2)//Boothand: Let's write it so we get it. PM_irand_timesync( 2, 3 ) )
 		{
 			return qtrue;
 		}
+
+		//Boothand comment: Remove chain direction limits for now.
+		/*
 		else if ( pm->ps->saberAttackChainCount > 0 )
 		{
 			int chainAngle = PM_SaberAttackChainAngle( curmove, newmove );
@@ -772,7 +775,7 @@ qboolean PM_SaberKataDone(int curmove, int newmove)
 					return qtrue;
 				}
 			}
-		}
+		}*/
 	}
 	else
 	{//Perhaps have chainAngle influence fast and medium chains as well? For now, just do level 3.
