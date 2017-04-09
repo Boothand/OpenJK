@@ -3116,7 +3116,8 @@ void ClientThink_real( gentity_t *ent ) {
 	{
 		ent->client->lastGenCmd = pmove.cmd.generic_cmd;
 		if (pmove.cmd.generic_cmd != GENCMD_FORCE_THROW &&
-			pmove.cmd.generic_cmd != GENCMD_FORCE_PULL)
+			pmove.cmd.generic_cmd != GENCMD_FORCE_PULL &&
+			pmove.cmd.generic_cmd != GENCMD_SABERATTACKCYCLE)
 		{ //these are the only two where you wouldn't care about a delay between
 			ent->client->lastGenCmdTime = level.time + 300; //default 100ms debounce between issuing the same command.
 		}
