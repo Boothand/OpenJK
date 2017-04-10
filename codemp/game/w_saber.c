@@ -4562,6 +4562,9 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 			&& WP_SaberCanBlock(&g_entities[tr.entityNum], tr.endpos, 0, MOD_SABER, qfalse, attackStr))
 		{//hit a client who blocked the attack (fake: didn't actually hit their saber)
 
+
+			//Com_Printf("Someone could block.\n");
+
 			if (dmg <= SABER_NONATTACK_DAMAGE)
 			{
 				self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
@@ -4571,7 +4574,8 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 			VectorCopy( tr.plane.normal, saberClashNorm );
 			saberClashEventParm = 1;
 
-			if (dmg > SABER_NONATTACK_DAMAGE)
+			//Boot comment: No need for saber lock checks.
+			/*if (dmg > SABER_NONATTACK_DAMAGE)
 			{
 				int lockFactor = g_saberLockFactor.integer;
 
@@ -4602,7 +4606,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 						}
 					}
 				}
-			}
+			}*/
 			otherOwner = &g_entities[tr.entityNum];
 			goto blockStuff;
 		}
@@ -4834,6 +4838,8 @@ blockStuff:
 
 		otherSaberLevel = G_SaberAttackPower(otherOwner, SaberAttacking(otherOwner));
 
+		//Boot comment: No locks, like.. under any circumstances.
+		/*
 		if (dmg > SABER_NONATTACK_DAMAGE && !unblockable && !otherUnblockable)
 		{
 			int lockFactor = g_saberLockFactor.integer;
@@ -4851,6 +4857,7 @@ blockStuff:
 				}
 			}
 		}
+		*/
 
 		if (!otherOwner || !otherOwner->client)
 		{
@@ -4863,6 +4870,11 @@ blockStuff:
 			otherOwner->client->ps.saberBlocked = 0;
 		}
 
+		//Boot: for now, just get blocked, man.
+		self->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
+
+		//Boothand comment
+		/*
 		if ( sabersClashed &&
 			dmg > SABER_NONATTACK_DAMAGE &&
 			 selfSaberLevel < FORCE_LEVEL_3 &&
@@ -4875,6 +4887,7 @@ blockStuff:
 			 !PM_SaberInReflect(self->client->ps.saberMove) &&
 			 !unblockable )
 		{
+			Com_Printf("Entered this function. Line 4882ish.\n");
 			//if (Q_irand(1, 10) <= 6)
 			if (1) //for now, just always try a deflect. (deflect func can cause bounces too)
 			{
@@ -4901,7 +4914,10 @@ blockStuff:
 #endif
 			}
 		}
+		*/
 
+		//Boothand comment
+		/*
 		if ( ((selfSaberLevel < FORCE_LEVEL_3 && ((tryDeflectAgain && Q_irand(1, 10) <= 3) || (!tryDeflectAgain && Q_irand(1, 10) <= 7))) || (Q_irand(1, 10) <= 1 && otherSaberLevel >= FORCE_LEVEL_3))
 			&& !PM_SaberInBounce(self->client->ps.saberMove)
 
@@ -4919,6 +4935,9 @@ blockStuff:
 		{//knockaways can make fast-attacker go into a broken parry anim if the ent is using fast or med. In MP, we also randomly decide this for level 3 attacks.
 			//Going to go ahead and let idle damage do simple knockaways. Looks sort of good that way.
 			//turn the parry into a knockaway
+
+			Com_Printf("Yellow attacks red. Both staggered. Line 4928ish.\n");
+
 			if (self->client->ps.saberEntityNum) //make sure he has his saber still
 			{
 				saberCheckKnockdown_BrokenParry(&g_entities[self->client->ps.saberEntityNum], self, otherOwner);
@@ -4964,6 +4983,9 @@ blockStuff:
 			{
 				saberCheckKnockdown_BrokenParry(&g_entities[otherOwner->client->ps.saberEntityNum], otherOwner, self);
 			}
+
+			Com_Printf("Red attacks. Line 4976ish.\n");
+
 
 #ifndef FINAL_BUILD
 			if (g_saberDebugPrint.integer)
@@ -5074,7 +5096,7 @@ blockStuff:
 				didOffense = qtrue;
 			}
 		}
-
+		*/
 		if (d_saberGhoul2Collision.integer && !didDefense && dmg <= SABER_NONATTACK_DAMAGE && !otherUnblockable) //with perpoly, it looks pretty weird to have clash flares coming off the guy's face and whatnot
 		{
 			if (!PM_SaberInParry(otherOwner->client->ps.saberMove) &&
@@ -5099,11 +5121,18 @@ blockStuff:
 			{
 				qboolean crushTheParry = qfalse;
 
+
+				//Com_Printf("Block?.\n");
+				otherOwner->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
+				//otherOwner->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
+				//Boothand comment
+				/*
 				if (unblockable)
 				{ //It's unblockable. So send us into a broken parry immediately.
 					crushTheParry = qtrue;
 				}
 
+				
 				if (!SaberAttacking(otherOwner))
 				{
 					int otherIdleStr = otherOwner->client->ps.fd.saberAnimLevel;
@@ -5117,21 +5146,29 @@ blockStuff:
 					otherOwner->client->ps.saberEventFlags |= SEF_PARRIED;
 					self->client->ps.saberEventFlags |= SEF_BLOCKED;
 
+					
 					if ( attackStr+self->client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE] > otherIdleStr+otherOwner->client->ps.fd.forcePowerLevel[FP_SABER_DEFENSE] )
 					{
-						crushTheParry = qtrue;
+						Com_Printf("CrushTheParry.\n");
+
+						//crushTheParry = qtrue; Boothand
 					}
 					else
 					{
+						Com_Printf("TryDeflectAgain.\n");
 						tryDeflectAgain = qtrue;
 					}
 				}
+				*/
+
+				//Boothand comment
+				/*
 				else if (selfSaberLevel > otherSaberLevel ||
 					(selfSaberLevel == otherSaberLevel && Q_irand(1, 10) <= 2))
 				{ //they are attacking, and we managed to make them break
 					//Give them a parry, so we can later break it.
 					WP_SaberBlockNonRandom(otherOwner, tr.endpos, qfalse);
-					crushTheParry = qtrue;
+					//crushTheParry = qtrue;	Boothand
 
 					if (otherOwner->client->ps.saberEntityNum) //make sure he has his saber still
 					{
@@ -5160,6 +5197,8 @@ blockStuff:
 						{
 							self->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
 							didOffense = qtrue;
+
+							Com_Printf("Both attacking, clash.\n");
 						}
 						if (!didDefense &&
 							!PM_SaberInParry(otherOwner->client->ps.saberMove) &&
@@ -5171,6 +5210,8 @@ blockStuff:
 							!unblockable)
 						{
 							otherOwner->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
+
+							Com_Printf("Both attacking, clash.\n");
 						}
 #ifndef FINAL_BUILD
 						if (g_saberDebugPrint.integer)
@@ -5187,6 +5228,9 @@ blockStuff:
 						//Using reflected anims instead now
 						self->client->ps.saberMove = BG_BrokenParryForAttack(self->client->ps.saberMove);
 						self->client->ps.saberBlocked = BLOCKED_PARRY_BROKEN;
+
+						Com_Printf("Red attack vs yellow block?.\n");
+
 
 						if (self->client->ps.saberEntityNum) //make sure he has his saber still
 						{
@@ -5205,7 +5249,10 @@ blockStuff:
 						didOffense = qtrue;
 					}
 				}
+				*/
 
+				//Boothand comment
+				/*
 				if (crushTheParry && PM_SaberInParry(G_GetParryForBlock(otherOwner->client->ps.saberBlocked)))
 				{ //This means that the attack actually hit our saber, and we went to block it.
 				  //But, one of the above cases says we actually can't. So we will be smashed into a broken parry instead.
@@ -5222,14 +5269,18 @@ blockStuff:
 					}
 #endif
 				}
+				
 				else if (PM_SaberInParry(G_GetParryForBlock(otherOwner->client->ps.saberBlocked)) && !didOffense && tryDeflectAgain)
 				{ //We want to try deflecting again because the other is in the parry and we haven't made any new moves
-					int preMove = otherOwner->client->ps.saberMove;
+					//int preMove = otherOwner->client->ps.saberMove;
 
 					otherOwner->client->ps.saberMove = G_GetParryForBlock(otherOwner->client->ps.saberBlocked);
 					WP_GetSaberDeflectionAngle(self, otherOwner, tr.fraction);
 					otherOwner->client->ps.saberMove = preMove;
+					Com_Printf("Get saber defelection angle.\n");
+
 				}
+				*/
 			}
 		}
 
@@ -9432,6 +9483,9 @@ int WP_SaberCanBlock(gentity_t *self, vec3_t point, int dflags, int mod, qboolea
 	{ //blocking a saber, not a projectile.
 		blockFactor -= 0.25f;
 	}
+
+	//Boothand
+	blockFactor = 0.2f;
 
 	if (!InFront( point, self->client->ps.origin, self->client->ps.viewangles, blockFactor )) //orig 0.2f
 	{
