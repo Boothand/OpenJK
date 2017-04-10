@@ -3211,9 +3211,12 @@ void PM_WeaponLightsaber(void)
 			case BLOCKED_ATK_BOUNCE:
 				// If there is absolutely no blocked move in the chart, don't even mess with the animation.
 				// OR if we are already in a block or parry.
+
 				if (pm->ps->saberMove >= LS_T1_BR__R)
 				{//an actual bounce?  Other bounces before this are actually transitions?
 					pm->ps->saberBlocked = BLOCKED_NONE;
+					//Com_Printf("Set saberBlocked to none.\n");
+
 				}
 				else
 				{
@@ -3221,6 +3224,10 @@ void PM_WeaponLightsaber(void)
 
 					if ( PM_SaberInBounce( pm->ps->saberMove ) || !BG_SaberInAttack( pm->ps->saberMove ) )
 					{
+						//Com_Printf("Saber in bounce or not in attack\n");
+
+						//Boothand comment - don't keep attacking if you suddenly touch their saber during your stagger
+						/*
 						if ( pm->cmd.buttons & BUTTON_ATTACK )
 						{//transition to a new attack
 							int newQuad = PM_SaberMoveQuadrantForMovement( &pm->cmd );
@@ -3233,29 +3240,39 @@ void PM_WeaponLightsaber(void)
 							}//else player is switching up anyway, take the new attack dir
 							bounceMove = transitionMove[saberMoveData[pm->ps->saberMove].startQuad][newQuad];
 						}
-						else
+						else*/
 						{//return to ready
 							if ( saberMoveData[pm->ps->saberMove].startQuad == Q_T )
 							{
 								bounceMove = LS_R_BL2TR;
+								//Com_Printf("Startquad = top\n");
+
 							}
 							else if ( saberMoveData[pm->ps->saberMove].startQuad < Q_T )
 							{
 								bounceMove = LS_R_TL2BR+saberMoveData[pm->ps->saberMove].startQuad-Q_BR;
+								//Com_Printf("Startquad right somewhere\n");
+
 							}
 							else// if ( saberMoveData[pm->ps->saberMove].startQuad > Q_T )
 							{
 								bounceMove = LS_R_BR2TL+saberMoveData[pm->ps->saberMove].startQuad-Q_TL;
+								//Com_Printf("Startquad left somewhere\n");
+
 							}
 						}
 					}
 					else
 					{//start the bounce
+						//Com_Printf("Not in bounce or in attack. Setting some saber bounce.\n");
+
 						bounceMove = PM_SaberBounceForAttack( (saberMoveName_t)pm->ps->saberMove );
+
+						//Com_Printf("%i\n", bounceMove);
 					}
 
-					PM_SetSaberMove( bounceMove );
-
+					
+					PM_SetSaberMove(bounceMove);
 					pm->ps->weaponTime = pm->ps->torsoTimer;//+saberMoveData[bounceMove].blendTime+SABER_BLOCK_DUR;
 
 				}
@@ -3695,9 +3712,9 @@ weapChecks:
 					else */
 					newmove = PM_SaberAttackForMovement( curmove );
 					if ( (PM_SaberInBounce( curmove )||PM_SaberInBrokenParry( curmove ))
-						&& saberMoveData[newmove].startQuad == saberMoveData[curmove].endQuad )
+						/* Boothand comment: Don't follow up on bounces && saberMoveData[newmove].startQuad == saberMoveData[curmove].endQuad*/ )
 					{//this attack would be a repeat of the last (which was blocked), so don't actually use it, use the default chain attack for this bounce
-						newmove = saberMoveData[curmove].chain_attack;
+						newmove = saberMoveData[curmove].chain_idle;	//chain_attack		Boothand
 					}
 
 					if ( PM_SaberKataDone( curmove, newmove ) )
