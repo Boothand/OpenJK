@@ -4556,11 +4556,12 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 
 		didHit = qtrue;
 
-		if ( !d_saberSPStyleDamage.integer//let's trying making blocks have to be blocked by a saber
-			&& g_entities[tr.entityNum].client
+		if ( /*Boothand: this should run no matter what, for blocking. !d_saberSPStyleDamage.integer//let's trying making blocks have to be blocked by a saber
+			&& */g_entities[tr.entityNum].client
 			&& !unblockable
 			&& WP_SaberCanBlock(&g_entities[tr.entityNum], tr.endpos, 0, MOD_SABER, qfalse, attackStr))
 		{//hit a client who blocked the attack (fake: didn't actually hit their saber)
+
 			if (dmg <= SABER_NONATTACK_DAMAGE)
 			{
 				self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
