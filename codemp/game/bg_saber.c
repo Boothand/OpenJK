@@ -497,6 +497,27 @@ int PM_SaberAnimTransitionAnim( int curmove, int newmove )
 						break;
 					}
 				}
+
+				switch (curmove)
+				{
+					//transitioning from a return
+				case LS_R_TL2BR:
+				case LS_R_L2R:
+				case LS_R_BL2TR:
+				case LS_R_BR2TL:
+				case LS_R_R2L:
+				case LS_R_TR2BL:
+				case LS_R_T2B:
+
+					//Com_Printf("Return transition 1.\n");
+					retmove = transitionMove[saberMoveData[curmove].endQuad][saberMoveData[newmove].startQuad];
+
+					if (newmove == LS_A_R2L)
+					{
+						retmove = LS_T1_TR__R;
+					}
+					break;
+				}
 			}
 			else
 			{
@@ -528,6 +549,8 @@ int PM_SaberAnimTransitionAnim( int curmove, int newmove )
 				case LS_R_R2L:
 				case LS_R_TR2BL:
 				case LS_R_T2B:
+
+					//Com_Printf("Return transition 2.\n");
 				//transitioning from a bounce
 				/*
 				case LS_BOUNCE_UL2LL:
