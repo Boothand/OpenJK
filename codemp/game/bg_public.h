@@ -534,6 +534,9 @@ typedef struct pmove_s {
 
 	int			checkDuelLoss;
 
+	//Boothand stuff:
+	//qboolean	blocking;
+
 	//rww - bg entitystate access method
 	bgEntity_t	*baseEnt; //base address of the entity array (g_entities or cg_entities)
 	int			entSize; //size of the struct (gentity_t or centity_t) so things can be dynamic

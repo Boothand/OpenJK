@@ -2873,6 +2873,8 @@ void PM_WeaponLightsaber(void)
 		return;
 	}
 
+	//Boothand comment: no need for saberlocking stuff
+#if 0
  	if ( pm->ps->saberLockTime > pm->cmd.serverTime )
 	{
 		pm->ps->saberMove = LS_NONE;
@@ -2921,6 +2923,20 @@ void PM_WeaponLightsaber(void)
 			}
 		}
 	}
+#endif
+
+	//BOOTHAND: Manual blocking.
+
+	//Com_Printf("%i\n", pm->blocking);
+
+	//if (pm->cmd.buttons & BUTTON_MANUAL_BLOCK
+		//&& !pm->blocking)
+	//{
+		//pm->blocking = qtrue;
+		//pm->ps->weaponTime = 0;
+		//pm->ps->saberBlocked = BLOCKED_TOP;
+		//PM_SetAnim(SETANIM_TORSO, BOTH_P1_S1_T_, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
+	//}
 
 	if ( BG_KickingAnim( pm->ps->legsAnim ) ||
 		BG_KickingAnim( pm->ps->torsoAnim ))
@@ -3338,6 +3354,9 @@ void PM_WeaponLightsaber(void)
 		// Done with block, so stop these active weapon branches.
 		return;
 	}
+
+	
+
 
 weapChecks:
 	if (pm->ps->saberEntityNum)
